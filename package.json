@@ -1,0 +1,28 @@
+{
+  "name": "neptune",
+  "version": "1.0.0",
+  "description": "A powerful modular Discord bot bundled with a fully-featured online panel.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plutonus-pty-ltd/neptune.git"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "node",
+    "discord",
+    "bot",
+    "webpanel",
+    "discord.js"
+  ],
+  "author": "Plutonus <ceo@plutonus.co>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/plutonus-pty-ltd/neptune/issues"
+  },
+  "homepage": "https://github.com/plutonus-pty-ltd/neptune#readme"
+}
