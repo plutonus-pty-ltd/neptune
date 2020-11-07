@@ -30,7 +30,7 @@ module.exports = {
 		}
 
 		registerEvent(event) {
-			this.Client.on(event, (data) => require(`${__dirname}/events/${event}`)(this.Client, data));
+			this.Client.on(event, (data) => require(`${__dirname}/events/${event}`)(this, data));
 			console.log(`Loaded event: ${event}`);
 		}
 
@@ -54,7 +54,7 @@ module.exports = {
 
 			try {
 				const struct = {
-					command: command,
+					file: command,
 					category: category || "other"
 				}
 
@@ -62,6 +62,29 @@ module.exports = {
 				console.log(`Loaded command ${struct.category} - ${command.name}`);
 			} catch {
 				console.log(`Command ${struct.category} - ${command.name} failed to load!`);
+			}
+		}
+
+		isCommand(msg) {
+			if(!msg.content.startsWith(this.config.prefix)) return false;
+
+			const cmd = msg.content.slice(this.config.prefix.length).split(/ +/).shift().toLowerCase();
+			if(this.commands.has(cmd) || this.commands.find(command => command.file.aliases.includes(cmd))) return true;
+			return false;
+		}
+
+		runCommand(msg) {
+			const args = msg.content.slice(this.config.prefix.length).split(/ +/),
+				cmd = args.shift().toLowerCase(),
+				command = this.commands.get(cmd) || this.commands.find(command => command.file.aliases.includes(cmd));
+
+			if(command.staff && !msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send("You don't have permission to use that command!");
+
+			try {
+				command.file.execute(this.Client, msg, args);
+			} catch {
+				msg.channel.send("Something went wrong while executing that command!");
+				console.log("Something went wrong while executing that command!");
 			}
 		}
 
