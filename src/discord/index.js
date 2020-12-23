@@ -1,7 +1,11 @@
 require("dotenv").config();
 
 const fs = require("fs");
+const path = require("path");
 const discordjs = require("discord.js");
+const sqlite = require("better-sqlite3");
+
+const settings = new sqlite(path.join(__dirname, "/data/settings.sqlite"));
 
 module.exports = {
 	Client: class Client extends discordjs.Client {
@@ -10,6 +14,17 @@ module.exports = {
 			this.Client = new discordjs.Client();
 			this.categories = [];
 			this.commands = new discordjs.Collection();
+
+			const table = settings.prepare("SELECT count(*) FROM sqlite_master WHERE TYPE='table' AND NAME='guilds';").get();
+			if(!table['count(*)']) {
+				settings.prepare("CREATE TABLE guilds (id TEXT PRIMARY KEY, settings TEXT);").run();
+				settings.prepare("CREATE UNIQUE INDEX idx_guilds_id ON guilds (id);").run();
+			}
+
+			this.Client.once("ready", () => {
+				this.Client.reqSettings = settings.prepare("SELECT id, settings FROM guilds WHERE id=?;");
+				this.Client.setSettings = settings.prepare("INSERT OR REPLACE INTO guilds (id, settings) VALUES (@id, @settings);");
+			});
 
 			return this;
 		}

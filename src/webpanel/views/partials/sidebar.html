@@ -1,0 +1,57 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+	<ul class="nav">
+		<div class="sidebar-brand-wrapper d-none d-flex align-items-center justify-content-center fixed-top">
+			<a class="m-auto sidebar-brand brand-logo" href="/">
+				<!--<img src="/assets/images/logo.png" alt="logo" />-->
+				<h1 class="text-white">Neptune</h1>
+			</a>
+			<a class="m-auto sidebar-brand brand-logo-mini" href="/">
+				<!--<img src="/assets/images/logo-mini.png" alt="logo" />-->
+				<h1 class="text-white">N</h1>
+			</a>
+		</div>
+		{{>sidebar-profile}}
+		<li class="nav-item nav-category">
+			<span class="nav-link">Navigation</span>
+		</li>
+		<li class="nav-item menu-items">
+			<a class="nav-link" {{#if guilds}}data-toggle="collapse" href="#guilds" aria-expanded="false" aria-controls="guilds"{{else}}href="/dashboard"{{/if}}>
+				<span class="menu-icon">
+					<i class="mdi mdi-speedometer"></i>
+				</span>
+				<span class="menu-title">Manage Servers</span>
+				{{#if guilds}}<i class="menu-arrow"></i>{{/if}}
+			</a>
+			{{#if guilds}}
+				<div class="collapse" id="guilds">
+					<ul class="nav flex-column sub-menu">
+						{{#each guilds}}
+							<li class="nav-item">
+								<a class="nav-link" href="/dashboard/{{this.id}}">{{this.name}}</a>
+							</li>
+						{{/each}}
+					</ul>
+				</div>
+			{{/if}}
+		</li>
+		<li class="nav-item menu-items">
+			<a class="nav-link" data-toggle="collapse" href="#about-neptune" aria-expanded="false" aria-controls="about-neptune">
+				<span class="menu-icon">
+					<i class="mdi mdi-file-document-box"></i>
+				</span>
+				<span class="menu-title">Neptune</span>
+				<i class="menu-arrow"></i>
+			</a>
+			<div class="collapse" id="about-neptune">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item">
+						<a class="nav-link" href="/about">What is Neptune?</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/add">Invite the Bot</a>
+					</li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</nav>
